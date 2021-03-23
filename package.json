@@ -1,0 +1,26 @@
+{
+  "name": "o-slash-server",
+  "version": "1.0.0",
+  "description": "Rest based server for o-slash social platform",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AamirAlam/o-slash-server.git"
+  },
+  "author": "Aamir Alam <aamiralam1991@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.2.5",
+    "express": "^4.17.1",
+    "express-validator": "^6.3.1",
+    "mongoose": "^5.8.9",
+    "request": "^2.88.0"
+  },
+  "bugs": {
+    "url": "https://github.com/AamirAlam/o-slash-server/issues"
+  },
+  "homepage": "https://github.com/AamirAlam/o-slash-server#readme"
+}
