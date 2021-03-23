@@ -1,0 +1,9 @@
+{
+    "mongoURI": "mongodb+srv://pesto:11223366@cluster0.l8doo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "jwtSecret": "BE5F9E52E456FB3C5E89D8E9FE354",
+    "AWS": {
+      "accessKeyId": "PONRBNGUFWY4QAQYMUCS",
+      "secretAccessKey": "Jh/YztPR4drE7dl//uEFS3tFMCvgS8bZY28pn01hjx0"
+    }
+  }
+  
