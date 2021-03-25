@@ -9,7 +9,8 @@ Rest based server for o-slash social platform
 
 ## Database schema
 
-![o_slash_schema](https://user-images.githubusercontent.com/20106622/112122052-e2932d80-8be5-11eb-8471-5388714c0eb3.PNG)
+![o_slash_schema2](https://user-images.githubusercontent.com/20106622/112526378-e2528800-8dc7-11eb-8580-770aec4fe887.PNG)
+
 
 
 ## API doc
