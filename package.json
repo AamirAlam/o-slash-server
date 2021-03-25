@@ -18,7 +18,9 @@
     "express-validator": "^6.3.1",
     "mongoose": "^5.8.9",
     "request": "^2.88.0",
-    "cors": "2.8.5"
+    "cors": "2.8.5",
+    "bcryptjs": "2.4.3",
+    "jsonwebtoken": "8.5.1"
   },
   "bugs": {
     "url": "https://github.com/AamirAlam/o-slash-server/issues"
