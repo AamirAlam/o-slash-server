@@ -14,4 +14,6 @@ Rest based server for o-slash social platform
 
 ## API doc
 
+- Default API endpoint :   https://oslash-server.herokuapp.com/
+
 - postman doc for [api endpoints](https://documenter.getpostman.com/view/5348217/TzCFhrA3)
