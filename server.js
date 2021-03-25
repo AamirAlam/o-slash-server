@@ -7,13 +7,14 @@ const cors = require("cors");
 //Connect Database
 connectDB();
 
-
 //Init Middleware
 app.use(express.json({ extended: false }));
 app.use(cors());
 app.options("*", cors());
 
-app.get("/", (req, res) => res.send({success:true, message: "Welcome to o-slash REST service :)"}));
+app.get("/", (req, res) =>
+  res.send({ success: true, message: "Welcome to o-slash REST service :)" })
+);
 
 app.use("/api/auth/v1/", require("./routes/auth/v1/auth"));
 

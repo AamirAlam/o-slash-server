@@ -19,14 +19,12 @@ router.get("/__test", (req, res) => res.send("auth routes working :)"));
 router.post(
   "/login",
   [
-    check("email")
-      .isEmail()
-      ,
-      check('password')
+    check("email").isEmail(),
+    check("password")
       .isLength({ min: 5 })
-      .withMessage('must be at least 5 chars long')
+      .withMessage("must be at least 5 chars long")
       .matches(/\d/)
-      .withMessage('must contain a number'),
+      .withMessage("must contain a number"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -36,27 +34,33 @@ router.post(
     }
 
     const { email, password } = req.body;
-    console.log(email, password)
+    console.log(email, password);
     // Check if user exists
     try {
       let user = await User.findOne({ email });
 
       if (user) {
         console.log(user);
-       
 
         const payload = {
           user: {
             id: user.id,
-          }
+          },
         };
 
-        jwt.sign(payload, config.get("jwtSecret"), { expiresIn: 360000 }, (err, token) => {
-          if (err) throw err;
-          return res.json({ token });
-        });
+        jwt.sign(
+          payload,
+          config.get("jwtSecret"),
+          { expiresIn: 360000 },
+          (err, token) => {
+            if (err) throw err;
+            return res.json({ token });
+          }
+        );
       } else {
-        return res.status(400).json({succeess:false, message:"Invalid email or password"})
+        return res
+          .status(400)
+          .json({ succeess: false, message: "Invalid email or password" });
       }
     } catch (err) {
       console.log(err.message);
@@ -71,20 +75,16 @@ router.post(
 router.post(
   "/signup",
   [
-    check("name","Name is required")
-    .not()
-    .isEmpty(),
-    check("email", "Please enter a valid email")
-    .isEmail(),
-    check('password')
-    .isLength({ min: 5 })
-    .withMessage('must be at least 5 chars long')
-    .matches(/\d/)  
-    .withMessage('must contain a number'),
-  
+    check("name", "Name is required").not().isEmpty(),
+    check("email", "Please enter a valid email").isEmail(),
+    check("password")
+      .isLength({ min: 5 })
+      .withMessage("must be at least 5 chars long")
+      .matches(/\d/)
+      .withMessage("must contain a number"),
   ],
   async (req, res) => {
-    console.log('body', req.body)
+    console.log("body", req.body);
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -94,17 +94,22 @@ router.post(
     const { name, email, password } = req.body;
     const emailRegex = new RegExp(email);
     try {
-      let user = await User.findOne({ email: { $regex: emailRegex, $options: "i" }, password: { $exists: true } });
+      let user = await User.findOne({
+        email: { $regex: emailRegex, $options: "i" },
+        password: { $exists: true },
+      });
 
       if (user) {
-        return res.status(400).json({ errors: [{ msg: "User already exists" }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "User already exists" }] });
       }
 
       user = new User({
         name: name,
         role: "user",
         email,
-        password
+        password,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -113,7 +118,9 @@ router.post(
 
       user = await user.save();
 
-      return res.status(201).json({success:true, message:'Signup successfully :)'})
+      return res
+        .status(201)
+        .json({ success: true, message: "Signup successfully :)" });
     } catch (err) {
       console.log(err);
       res.status(500).send("Server Error");
