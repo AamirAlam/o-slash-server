@@ -17,4 +17,14 @@ Rest based server for o-slash social platform
 
 - Default API endpoint :   https://oslash-server.herokuapp.com/
 
-- postman doc for [api endpoints](https://documenter.getpostman.com/view/5348217/TzCFhrA3)
+- postman doc for [api endpoints](https://documenter.getpostman.com/view/5348217/TzCJg9kH)
+
+
+## Test
+
+- Test application with 
+    `npm test`
+- Test report for auth api
+
+![auth spec test](https://user-images.githubusercontent.com/20106622/112719954-b9dea100-8f21-11eb-89a4-a7c9bf472688.PNG)
+
