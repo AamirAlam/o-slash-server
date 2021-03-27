@@ -50,16 +50,17 @@ router.post(
 
       const newPost = new Post({
         text: req.body.text,
-        name: user.name,
-        avatar: user.avatar,
+        name: user ? user.name : "",
+        avatar: user ? user.avatar : "",
         user: req.user.id,
       });
 
       const post = await newPost.save();
-      res.json(post);
+      res.status(201).json(post);
       writeLog(req.user.id, true);
     } catch (err) {
-      res.status(500).send("Server Error");
+      console.log(err);
+      res.status(500).send(err.toString());
       writeLog(req.user.id, false);
     }
   }
