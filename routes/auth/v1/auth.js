@@ -1,14 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const config = require("config");
 const jwt = require("jsonwebtoken");
 
 const { check, validationResult } = require("express-validator");
 
 const User = require("../../../models/User");
 
-// @route GET api/users
+// @route GET /api/auth/v1/__test
 // @desc Test route
 // @access PUBLIC
 router.get("/__test", (req, res) => res.send("auth routes working :)"));
@@ -34,7 +33,6 @@ router.post(
     }
 
     const { email, password } = req.body;
-    console.log(email, password);
     // Check if user exists
     try {
       let user = await User.findOne({ email });
@@ -61,15 +59,14 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get("jwtSecret"),
+        process.env.JWT_SECRET,
         { expiresIn: "5 days" },
         (err, token) => {
           if (err) throw err;
-          res.json({ message: "Login success", token: token });
+          res.status(201).json({ message: "Login success", token: token });
         }
       );
     } catch (err) {
-      console.log(err.message);
       res.status(500).send("Server Error");
     }
   }
@@ -90,7 +87,6 @@ router.post(
       .withMessage("must contain a number"),
   ],
   async (req, res) => {
-    console.log("body", req.body);
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -128,7 +124,6 @@ router.post(
         .status(201)
         .json({ success: true, message: "Signup successfully :)" });
     } catch (err) {
-      console.log(err);
       res.status(500).send("Server Error");
     }
   }
