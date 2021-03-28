@@ -5,7 +5,13 @@ const RequestSchema = new Schema({
   post: {
     type: Schema.Types.ObjectId,
   },
-  user: {
+  request_type: {
+    type: String,
+  },
+  updated_data: {
+    type: Schema.Types.Mixed,
+  },
+  moderator: {
     type: Schema.Types.ObjectId,
   },
   modified_at: {

@@ -5,10 +5,12 @@ const { check, validationResult } = require("express-validator");
 
 const Post = require("../../../models/Post");
 const User = require("../../../models/User");
+const ModeratorRequest = require("../../../models/ModeratorRequest");
 
 //middleware
 const auth = require("../../../middleware/auth");
 const RecordLog = require("../../../utils/recordLog");
+const requiredRole = require("../../../middleware/requiredRole");
 
 const writeLog = async (id, success) => {
   await RecordLog(id, "write", {
@@ -127,5 +129,52 @@ router.delete("/:id", auth, async (req, res) => {
     deleteLog(req.user.id, false);
   }
 });
+
+// admin routes
+
+// @route    POST api/posts/v1
+// @desc     Create a post
+// @access   Private
+router.put(
+  "/:id/",
+  [auth, requiredRole("admin")],
+  check("text", "Text is required").notEmpty(),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      writeLog(req.user.id, false);
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { text } = req.body;
+    try {
+      const user = await User.findById(req.user.id).select("-password");
+
+      if (user.role === "super_admin") {
+        // perform post update directly
+        const postData = await Post.findOneAndUpdate(
+          { _id: req.params.id },
+          { $set: { text: text } }
+        );
+        return res.status(201).json(postData);
+      } else {
+        console.log("creating update request");
+        const newChangeRequest = new ModeratorRequest({
+          post: req.params.id,
+          request_type: "update",
+          updated_data: { text: text },
+          moderator: req.user.id,
+        });
+
+        const changeReq = await newChangeRequest.save();
+        res.status(201).json(changeReq);
+        writeLog(req.user.id, true);
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err.toString());
+      writeLog(req.user.id, false);
+    }
+  }
+);
 
 module.exports = router;

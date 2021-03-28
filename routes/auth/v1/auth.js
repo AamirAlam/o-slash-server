@@ -54,6 +54,8 @@ router.post(
       const payload = {
         user: {
           id: user.id,
+          role: user.role,
+          approved: user.approved,
         },
       };
 
@@ -93,7 +95,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     const emailRegex = new RegExp(email);
     try {
       let user = await User.findOne({
@@ -106,10 +108,20 @@ router.post(
           .status(400)
           .json({ errors: [{ msg: "User already exists" }] });
       }
-
+      const allowedRoles = ["user", "admin"];
+      if (role && !allowedRoles.includes(role)) {
+        return res.status(400).json({
+          errors: [
+            { msg: "Only user and moderator role is allowed to signup" },
+          ],
+        });
+      }
+      const userRole = role ? role : "user";
+      const approved = role === "user" ? true : false;
       user = new User({
         name: name,
-        role: "user",
+        role: userRole,
+        approved: approved,
         email,
         password,
       });
